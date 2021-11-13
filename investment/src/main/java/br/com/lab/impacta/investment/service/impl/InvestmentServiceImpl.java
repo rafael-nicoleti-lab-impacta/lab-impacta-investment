@@ -41,8 +41,13 @@ public class InvestmentServiceImpl implements InvestmentService {
         if (!investment.verifyProductPrivateOrDefaultForInvestment(accountBalanceVO.getBalance(), product.get()))
             throw new RuntimeException("Retornar erro");
 
-//        investment.sufficientBalanceForInvestment
+        boolean isDebited = accountFacade.debitAccount(accountId, valueInvestment);
 
-        return null;
+        if (!isDebited)
+            throw new RuntimeException("Retornar erro");
+
+        investmentRepository.save(investment);
+
+        return investment;
     }
 }
